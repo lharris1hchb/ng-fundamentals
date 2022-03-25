@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { IEvent } from '../models/event';
 
 @Component({
   selector: 'app-event-thumbnail',
@@ -9,7 +10,7 @@ export class EventThumbnailComponent implements OnInit {
   readonly earlyStartTime : string = '8:00 am';
   readonly lateStartTime : string = '10:00 am';
 
-  @Input() event: any;
+  @Input() event!: IEvent;
 
   constructor() { }
 
