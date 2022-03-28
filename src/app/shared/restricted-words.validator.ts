@@ -1,9 +1,10 @@
-import { FormControl } from "@angular/forms";
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 
-  export function restrictedWords(words: string[] | null) {
+  export function restrictedWordsValidator(words: string[] | null) {
     return (control: FormControl) : {[key:string]: any} | null => {
       if(words?.length) {
+        console.log(words);
         var invalidWords = words.filter(w => control.value.includes(w));
 
         if(invalidWords.length > 0) {

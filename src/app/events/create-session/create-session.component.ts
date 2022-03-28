@@ -1,9 +1,9 @@
 import { Component, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { restrictedWords } from 'src/app/shared';
 import { EventEmitter } from '@angular/core';
 import { ISession } from '../models/session';
+import { restrictedWordsValidator } from 'src/app/shared/restricted-words.validator';
 
 @Component({
   selector: 'app-create-session',
@@ -28,7 +28,7 @@ export class CreateSessionComponent implements OnInit {
     this.presenter = new FormControl('', Validators.required);
     this.duration = new FormControl('', Validators.required);
     this.level = new FormControl('', Validators.required);
-    this.abstract = new FormControl('', [Validators.required, Validators.maxLength(400), restrictedWords(['foo', 'bar'])]);
+    this.abstract = new FormControl('', [Validators.required, Validators.maxLength(400), restrictedWordsValidator(['foo', 'bar'])]);
     this.newSessionForm = new FormGroup({
       name: this.name,
       presenter: this.presenter,
