@@ -11,13 +11,14 @@ import {
   EventsListComponent,
   EventThumbnailComponent,
   EventDetailsComponent,
-  CreateEventComponent
+  CreateEventComponent,
+  CreateSessionComponent,
+  SessionListComponent
 } from './events/index';
 
 import { NavBarComponent } from './nav/index';
 import { Error404Component } from './errors/index';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CreateSessionComponent } from './events/create-session/create-session.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { CreateSessionComponent } from './events/create-session/create-session.c
     CreateEventComponent,
     Error404Component,
     CreateSessionComponent,
+    SessionListComponent,
   ],
   imports: [
     BrowserModule,
