@@ -4,7 +4,7 @@ em {
   padding-left: 10px;
 }
 
-.error input {
+.error input, .error select, .error textarea {
   background-color: #E05C65;
   padding-left: 10px;
 }

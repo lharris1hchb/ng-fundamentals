@@ -4,11 +4,11 @@ import { ILocation } from "./location";
 export interface IEvent {
   id: number,
   name: string,
-  date: string,
+  date: Date,
   time: string,
   price: number,
   imageUrl: string,
-  location: ILocation,
+  location?: ILocation,
   onlineUrl?: string,
   sessions: ISession[],
 }

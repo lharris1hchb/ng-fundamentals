@@ -16,6 +16,8 @@ import {
 
 import { NavBarComponent } from './nav/index';
 import { Error404Component } from './errors/index';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CreateSessionComponent } from './events/create-session/create-session.component';
 
 @NgModule({
   declarations: [
@@ -26,15 +28,18 @@ import { Error404Component } from './errors/index';
     EventDetailsComponent,
     CreateEventComponent,
     Error404Component,
+    CreateSessionComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
     ToastrModule.forRoot()
   ],
   providers: [
-    { provide: 'canDeactivateCreateEvent', useValue: checkDirtyState }
+    { provide: 'canLeaveFormDefault', useValue: checkDirtyState }
   ],
   bootstrap: [AppComponent]
 })

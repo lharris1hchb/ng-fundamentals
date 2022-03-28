@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NotificationService } from 'src/app/common/notification.service';
+import { NotificationService } from '../../shared/';
 import { EventService } from '../services/event.service';
 import { IEvent } from '../models/event';
 import { ActivatedRoute } from '@angular/router';
