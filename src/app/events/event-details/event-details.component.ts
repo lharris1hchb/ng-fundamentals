@@ -11,6 +11,8 @@ import { ISession } from '../models/session';
 export class EventDetailsComponent implements OnInit {
   event?: IEvent;
   addMode : boolean = false;
+  filterBy : string = 'all';
+  sortBy: string = 'votes';
 
   constructor(private eventService : EventService, private route: ActivatedRoute) { }
 
@@ -36,6 +38,14 @@ export class EventDetailsComponent implements OnInit {
 
   cancelAddSession(cancelAddSession : boolean) : void {
     this.addMode = !cancelAddSession;
+  }
+
+  setFilterBy(filter : string) {
+    this.filterBy = filter;
+  }
+
+  setSortBy(sortBy : string) {
+    this.sortBy = sortBy;
   }
 
 }
