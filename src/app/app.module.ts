@@ -21,6 +21,7 @@ import { Error404Component } from './errors/index';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CollapsibleWellComponent } from './shared/collapsible-well/collapsible-well.component';
 import { DurationPipe } from './events/services/duration.pipe';
+import { UpvoteComponent } from './events/upvote/upvote.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { DurationPipe } from './events/services/duration.pipe';
     SessionListComponent,
     CollapsibleWellComponent,
     DurationPipe,
+    UpvoteComponent,
   ],
   imports: [
     BrowserModule,

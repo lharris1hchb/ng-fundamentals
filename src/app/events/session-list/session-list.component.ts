@@ -1,5 +1,8 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/user/services';
 import { ISession } from '../models/session';
+import { VoterService } from '../services/voter.service';
 
 @Component({
   selector: 'app-session-list',
@@ -15,9 +18,50 @@ export class SessionListComponent implements OnChanges {
 
   visibleSessions : ISession[] = [];
 
-  constructor() { }
+  constructor(private auth : AuthService,
+              private router : Router,
+              private voterService : VoterService) { }
 
   ngOnChanges(changes: SimpleChanges): void {
+    this.update();
+  }
+
+  toggleVote(session : ISession) : void {
+    if(this.auth.currentUser) {
+      const username : string = this.auth.currentUser.username;
+      if(usernameHasVoted(session, username)) {
+        this.voterService.deleteVoter(session, username).subscribe(
+          this.updateSession
+        );
+      }
+      else {
+        this.voterService.addVoter(session, username).subscribe(
+          this.updateSession
+        );
+      }
+    }
+    else {
+      this.router.navigate(['/user/login']);
+    }
+  }
+
+  userHasVoted(session : ISession) : boolean {
+    return this.auth.currentUser ? usernameHasVoted(session, this.auth.currentUser.username)
+              : false;
+  }
+
+  private updateSession(updatedSession : ISession) : void {
+    this.sessions?.every(s => {
+      if(s.id == updatedSession.id) {
+        s = updatedSession;
+        this.update();
+        return false;
+      }
+      return true;
+    })
+  }
+
+  private update() {
     const sessions = this.sessions ?? [];
     const filterBy = this.filterBy ?? 'all';
     this.visibleSessions = filterSessions(sessions, filterBy);
@@ -47,3 +91,8 @@ function sortByNameAsc(s1: ISession, s2: ISession) {
 function sortByVotesDesc(s1: ISession, s2: ISession) {
   return s2.voters.length - s1.voters.length;
 }
+
+function usernameHasVoted(session: ISession, username : string) : boolean {
+  return session.voters.includes(username);
+}
+
