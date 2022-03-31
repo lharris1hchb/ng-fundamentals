@@ -22,6 +22,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CollapsibleWellComponent } from './shared/collapsible-well/collapsible-well.component';
 import { DurationPipe } from './events/services/duration.pipe';
 import { UpvoteComponent } from './events/upvote/upvote.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { UpvoteComponent } from './events/upvote/upvote.component';
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
+    HttpClientModule,
     ToastrModule.forRoot()
   ],
   providers: [

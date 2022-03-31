@@ -1,35 +1,48 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { NotificationService } from 'src/app/shared';
 import { IEvent } from '../models/event';
+import { ISession } from '../models/session';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EventService {
 
-  constructor() { }
+  constructor(private http : HttpClient, private notificationService : NotificationService) { }
 
   getEvents(): Observable<IEvent[]> {
-    let subject = new Subject<IEvent[]>();
-    setTimeout(() => { subject.next(EVENTS); subject.complete(); }, 100);
-    return subject;
+    return this.http.get<IEvent[]>('/api/events')
+              .pipe(catchError(this.handleError<IEvent[]>('getEvents', [])));
   }
 
-  getEvent(id: number) : IEvent {
-    return EVENTS.find(e => e.id === id) as IEvent;
+  getEvent(id: number) : Observable<IEvent> {
+    return this.http.get<IEvent>('/api/events/' + id)
+              .pipe(catchError(this.handleError<IEvent>('getEvent', undefined)));
   }
 
-  saveEvent(newEvent : any) : void {
-    newEvent.id = 999;
-    newEvent.session = [];
-    EVENTS.push(newEvent);
+  saveEvent(newEvent : any) : Observable<IEvent> {
+    return this.http.post<IEvent>('/api/events', newEvent)
+        .pipe(catchError(this.handleError<IEvent>('saveEvents', undefined)));
   }
 
-  updateEvent(event : IEvent) : void {
-    const index = EVENTS.findIndex(e => e.id = event.id);
-    EVENTS[index] = event;
+  searchSessions(searchTerm: string) : Observable<ISession[]> {
+    return this.http.get<ISession[]>('/api/sessions/search?search=' + searchTerm)
+    .pipe(catchError(this.handleError<ISession[]>('searchSessions', [])));
+  }
+
+  private handleError<T>(operation: string = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+      console.error(error);
+      this.notificationService.showError('Error!');
+      return of(result as T);
+    }
   }
 }
+
+
 
 const EVENTS: IEvent[] = [
   {

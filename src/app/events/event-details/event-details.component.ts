@@ -17,8 +17,7 @@ export class EventDetailsComponent implements OnInit {
   constructor(private eventService : EventService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    const id = Number(this.route.snapshot.params['id']);
-    this.event = this.eventService.getEvent(id);
+    this.route.data.forEach((data) => this.setEvent(data['event']));
   }
 
   addSession() : void {
@@ -31,7 +30,7 @@ export class EventDetailsComponent implements OnInit {
       const nextId = Math.max.apply(null, this.event?.sessions.map(s => s.id));
       newSession.id = nextId + 1;
       this.event.sessions.push(newSession);
-      this.eventService.updateEvent(this.event);
+      this.eventService.saveEvent(this.event).subscribe();
     }
     this.addMode = false;
   }
@@ -46,6 +45,11 @@ export class EventDetailsComponent implements OnInit {
 
   setSortBy(sortBy : string) {
     this.sortBy = sortBy;
+  }
+
+  private setEvent(event: IEvent) {
+    this.event = event;
+    this.addMode = false;
   }
 
 }

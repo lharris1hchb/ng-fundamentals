@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit {
   username !: string;
   password !: string;
   showAllErrors : boolean = false;
+  loginInvalid: boolean = false;
 
   readonly baseUrl : string[] = [''];
 
@@ -22,9 +23,9 @@ export class LoginComponent implements OnInit {
   }
 
   login(formValues : any) : void {
-    if(this.authService.loginUser(formValues.username, formValues.password)) {
-      this.router.navigate(this.baseUrl);
-    }
+    this.authService.loginUser(formValues.username, formValues.password).subscribe(
+      (response) => this.handleLoginresponse(response)
+    );
   }
 
   cancel() : void {
@@ -33,6 +34,15 @@ export class LoginComponent implements OnInit {
 
   mouseoverLogin(isOver: boolean) : void {
     this.showAllErrors = isOver;
+  }
+
+  private handleLoginresponse(response : any) {
+    if(!response) {
+      this.loginInvalid = true;
+    }
+    else {
+      this.router.navigate(this.baseUrl);
+    }
   }
 
 

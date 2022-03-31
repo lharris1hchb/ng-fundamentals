@@ -1,5 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { NotificationService } from 'src/app/shared';
 import { IUser } from 'src/app/user/models/user';
 import { ISession } from '../models/session';
 
@@ -8,21 +11,28 @@ import { ISession } from '../models/session';
 })
 export class VoterService {
 
-  constructor() { }
+  constructor(private http : HttpClient, private notificationService: NotificationService) { }
 
-  deleteVoter(session: ISession, username : string) : Observable<ISession> {
+  deleteVoter(eventId: number, session: ISession, username : string) : Observable<ISession> {
+
     session.voters = session.voters.filter(v => v != username);
 
-    let subject = new Subject<ISession>();
-    setTimeout(() => { subject.next(session); subject.complete(); }, 100);
-    return subject;
+    return this.http.delete<ISession>(`/api/events/${eventId}/sessions/${session.id}/voters/${username}`, {})
+      .pipe(catchError(this.handleError<ISession>('deleteVoter', undefined)));
   }
 
-  addVoter(session: ISession, username : string) : Observable<ISession> {
+  addVoter(eventId: number, session: ISession, username : string) : Observable<ISession> {
     session.voters.push(username);
 
-    let subject = new Subject<ISession>();
-    setTimeout(() => { subject.next(session); subject.complete(); }, 100);
-    return subject;
+    return this.http.post<ISession>(`/api/events/${eventId}/sessions/${session.id}/voters/${username}`, {})
+      .pipe(catchError(this.handleError<ISession>('addVoter', undefined)));
+  }
+
+  private handleError<T>(operation: string = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+      console.error(error);
+      this.notificationService.showError('Error!');
+      return of(result as T);
+    }
   }
 }
