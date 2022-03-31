@@ -7,10 +7,7 @@ describe('SessionListComponent', () => {
   let fixture: ComponentFixture<SessionListComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ SessionListComponent ]
-    })
-    .compileComponents();
+
   });
 
   beforeEach(() => {
