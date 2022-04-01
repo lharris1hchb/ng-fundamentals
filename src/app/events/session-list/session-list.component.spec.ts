@@ -17,6 +17,7 @@ describe('SessionListComponent', () => {
   let element: HTMLElement;
   let debug: DebugElement;
 
+
   beforeEach(async () => {
 
     mockAuth = { currentUser: { username: 'username' } };
